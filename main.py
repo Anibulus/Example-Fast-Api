@@ -69,7 +69,8 @@ def list_person(
         max_length=50, 
         regex="^[A-z]*$", 
         title="ID del usuario", 
-        description="El ID se consigue entrando a las configuraciones del perfil"),
+        description="El ID se consigue entrando a las configuraciones del perfil",
+        example="Lalo lalito"),
     age: int = Query(
         ...,
         ge=0,
@@ -92,7 +93,8 @@ def get_person(
         ...,
         ge=0,
         title='Person ID',
-        description= 'And ID value that references a person'
+        description= 'And ID value that references a person',
+        example=1
         )
     ):
     return {person_id: "It exists"}
