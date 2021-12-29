@@ -9,6 +9,10 @@ from fastapi import FastAPI, Body, Query, Path
 
 app = FastAPI()
 
+
+class Location(BaseModel):
+    pass
+
 class Person(BaseModel):
     first_name: str
     last_name: str
@@ -61,3 +65,19 @@ def get_person(
         )
     ):
     return {person_id: "It exists"}
+
+#More than one body
+@app.put('/person/{person_id}')
+def update_person(
+    person_id: int = Path(
+        ...,
+        ge=1,
+        title='Person id',
+        description='Id of the person you want to update'
+        ),
+    person: Person = Body(...),
+    location: Location = Body(...)
+    ):
+    result = dict(person)
+    result.update(dict(location))
+    return person
