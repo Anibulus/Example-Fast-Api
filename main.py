@@ -12,6 +12,7 @@ app = FastAPI()
 
 class HairColor(Enum):
     white= 'white'
+    black= 'black'
     brown= 'brown'
     red= 'red'
 
@@ -23,7 +24,8 @@ class Person(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        #example='Luis'
     )
     last_name: str = Field(
         ...,
@@ -38,6 +40,17 @@ class Person(BaseModel):
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = None
 
+    class Config:
+        schema_extra={
+            "example":{ #Tiene que tener el nombre example (convención) para aparecer en la documentacion
+                "first_name": "Luis",
+                "last_name": "Preza",
+                "age": 22,
+                "hair_color": "black",
+                "is_married": True
+            }
+        }
+
 #Path Operator  Decorator
 @app.get('/') #Home
 def home():
@@ -49,7 +62,7 @@ def create_person(person: Person = Body(...)): #Cuando se encuentra "= Body(...)
     return person
 
 @app.get('/person/details')
-def get_person(
+def list_person(
     name: Optional[str] = Query(
         default=None, 
         min_length=1, 
