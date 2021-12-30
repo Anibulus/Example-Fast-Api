@@ -18,9 +18,11 @@ class HairColor(Enum):
 
 
 class Location(BaseModel):
-    pass
+    city: str
+    state: str
+    country: str
 
-class Person(BaseModel):
+class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
@@ -51,13 +53,22 @@ class Person(BaseModel):
             }
         }
 
+class Person(PersonBase):
+    password: str = Field(
+        ...,
+        min_length=8
+    )
+
+class PersonOut(PersonBase):
+    pass
+
 #Path Operator  Decorator
 @app.get('/') #Home
 def home():
     return {"Hello":"World"}
 
 #Request and response body
-@app.post('/person/new')
+@app.post('/person/new', response_model=PersonOut, response_model_exclude={"age"})
 def create_person(person: Person = Body(...)): #Cuando se encuentra "= Body(...) quiere decir que es obligatorioem el Body"
     return person
 
