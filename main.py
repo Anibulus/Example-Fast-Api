@@ -6,7 +6,7 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 #FastAPI
-from fastapi import FastAPI, Body, Query, Path, status
+from fastapi import FastAPI, Body, Query, Path, Form,status
 
 
 
@@ -72,7 +72,9 @@ class PersonOut(PersonBase):
     pass
 
 
-
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example='anibulus')
+    message: str = Field(default='Login Successfully!')
 
 #Path Operator  Decorator
 @app.get(
@@ -141,7 +143,7 @@ def get_person(
 
 
 #More than one body
-@app.put('/person/{person_id}')
+@app.put(path='/person/{person_id}')
 def update_person(
     person_id: int = Path(
         ...,
@@ -155,3 +157,11 @@ def update_person(
     result = dict(person)
     result.update(dict(location))
     return person
+
+@app.post(
+    path='/login',
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+    )
+def login(username: str = Form(...), password: str = Form(...)):
+    return LoginOut(username=username)
