@@ -5,7 +5,7 @@ from enum import Enum
 from pydantic import BaseModel, Field, EmailStr
 
 #FastAPI
-from fastapi import FastAPI, Body, Query, Path, Form, File, UploadFile, Header, Cookie,status
+from fastapi import FastAPI, Body, Query, Path, Form, File, UploadFile, Header, Cookie, status, HTTPException
 
 
 
@@ -124,6 +124,7 @@ def list_person(
     """
     return {name: age}
 
+people = [1,2,3,4,5]
 
 @app.get(
     path='/person/details/{person_id}',
@@ -138,6 +139,11 @@ def get_person(
         example=1
         )
     ):
+    if person_id not in people:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='This person doesn\'t exist'
+        )
     return {person_id: "It exists"}
 
 
