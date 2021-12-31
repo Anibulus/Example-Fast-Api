@@ -78,7 +78,8 @@ class LoginOut(BaseModel):
 #Path Operator  Decorator
 @app.get(
     path='/', 
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Home']
     ) #Home
 def home():
     return {"Hello":"World"}
@@ -89,7 +90,8 @@ def home():
     path='/person/new', 
     response_model=PersonOut, 
     response_model_exclude={"age"},
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    tags=['Person']
     )
 def create_person(person: Person = Body(...)): #Cuando se encuentra "= Body(...) quiere decir que es obligatorioem el Body"
     return person
@@ -97,7 +99,8 @@ def create_person(person: Person = Body(...)): #Cuando se encuentra "= Body(...)
 
 @app.get(
     path='/person/details',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
     )
 def list_person(
     name: Optional[str] = Query(
@@ -128,7 +131,8 @@ people = [1,2,3,4,5]
 
 @app.get(
     path='/person/details/{person_id}',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
 )
 def get_person(
     person_id: int = Path(
@@ -148,7 +152,7 @@ def get_person(
 
 
 #More than one body
-@app.put(path='/person/{person_id}')
+@app.put(path='/person/{person_id}', tags=['Person'])
 def update_person(
     person_id: int = Path(
         ...,
@@ -167,14 +171,16 @@ def update_person(
 @app.post(
     path='/login',
     response_model=LoginOut,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Session']
     )
 def login(username: str = Form(...), password: str = Form(...)):
     return LoginOut(username=username)
 
 @app.post(
     path='/contact',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Contact']
     )
 def contact(
     first_name: str = Form(
@@ -202,7 +208,7 @@ def contact(
 #File
 @app.post(
     path='/post-image',
-
+    tags=['Upload']
 )
 def post_image(
     image: UploadFile = File(...)
