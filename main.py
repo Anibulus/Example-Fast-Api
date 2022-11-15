@@ -116,7 +116,8 @@ def create_person(person: Person = Body(...)): #Cuando se encuentra "= Body(...)
     path='/person/details',
     status_code=status.HTTP_200_OK,
     tags=['Person'],
-    summary='Request validation on Query Parameters'
+    summary='Request validation on Query Parameters',
+    deprecated=True
     )
 def list_person(
     name: Optional[str] = Query(
