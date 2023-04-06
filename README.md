@@ -1,9 +1,11 @@
 `python3 -m venv venv`
+
 `source venv/bin/activate`
+
 `pip install requirements.txt`
 
-uviorn <archivo>:<variable>  (reload hace que no halla que recargar la app)
 `uvicorn main:app --reload`
+uviorn <archivo>:<variable>  (reload hace que no halla que recargar la app)
 
 http://<host>/openapi.json
 
